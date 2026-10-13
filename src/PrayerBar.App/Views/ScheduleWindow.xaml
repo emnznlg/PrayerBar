@@ -1,0 +1,7 @@
+<Window x:Class="PrayerBar.App.Views.ScheduleWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="PrayerBar · Today's times" Width="330" SizeToContent="Height" ResizeMode="NoResize" ShowInTaskbar="False" Background="{StaticResource Surface}" Foreground="{StaticResource Text}">
+  <StackPanel Margin="24"><TextBlock Text="Today's prayer times" FontSize="22" FontWeight="SemiBold"/><TextBlock x:Name="Location" Margin="0,6,0,18" Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+    <ItemsControl x:Name="Times"><ItemsControl.ItemTemplate><DataTemplate><Grid Margin="0,7"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding Name}" FontSize="16"/><TextBlock Grid.Column="1" Text="{Binding Time}" Foreground="{StaticResource Gold}" FontSize="16"/></Grid></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+    <TextBlock x:Name="SourceLabel" Foreground="{StaticResource Muted}" FontSize="11" TextWrapping="Wrap" Margin="0,20,0,0"/>
+    <TextBlock Text="Calculated times may differ from the official Diyanet schedule. Sunrise is shown for reference." Foreground="{StaticResource Muted}" FontSize="11" TextWrapping="Wrap" Margin="0,8,0,0"/>
+  </StackPanel>
+</Window>

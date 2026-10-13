@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><UseWindowsForms>true</UseWindowsForms>
+    <ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>Resources/PrayerBar.ico</ApplicationIcon>
+    <AssemblyName>PrayerBar</AssemblyName><RootNamespace>PrayerBar.App</RootNamespace><Version>1.0.0</Version>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract><PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../PrayerBar.Core/PrayerBar.Core.csproj"/><EmbeddedResource Include="Resources/PrayerBar.ico"/></ItemGroup>
+  <ItemGroup><Using Remove="System.Windows.Forms"/><Using Remove="System.Drawing"/></ItemGroup>
+</Project>

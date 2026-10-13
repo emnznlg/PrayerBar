@@ -1,0 +1,12 @@
+<Window x:Class="PrayerBar.App.Views.WidgetWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Title="PrayerBar" Width="228" Height="34" WindowStyle="None" AllowsTransparency="True" Background="Transparent" ShowInTaskbar="False" ShowActivated="False" Topmost="True" ResizeMode="NoResize">
+  <Border Margin="1" CornerRadius="8" Background="{Binding Surface}" BorderBrush="#55465163" BorderThickness="1" Padding="10,0"
+    MouseLeftButtonDown="OnLeftDown" MouseLeftButtonUp="OnLeftUp" MouseMove="OnMove" MouseRightButtonUp="OnRightUp">
+    <Grid VerticalAlignment="Center"><Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="66"/></Grid.ColumnDefinitions>
+      <TextBlock Text="{Binding Prayer}" Foreground="{Binding Text}" FontWeight="SemiBold" FontSize="12" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+      <TextBlock Grid.Column="1" Text="{Binding Time}" Foreground="{Binding Muted}" FontSize="11" Margin="8,0,0,0" VerticalAlignment="Center"/>
+      <Border Grid.Column="2" Width="1" Height="12" Background="#55465163" Margin="9,0"/>
+      <TextBlock Grid.Column="3" Text="{Binding Countdown}" Foreground="{Binding Accent}" FontFamily="Consolas" FontSize="12" TextAlignment="Right" VerticalAlignment="Center"/>
+    </Grid>
+  </Border>
+</Window>
