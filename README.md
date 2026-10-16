@@ -4,7 +4,7 @@ A native .NET 10 / WPF prayer-times widget for Windows 11 x64. It stays in the t
 
 ## Install and use
 
-Extract `artifacts/PrayerBar-1.0.0-win-x64.zip` to a permanent folder and run `PrayerBar.exe`. The self-contained executable does not require a separate .NET runtime. It is currently unsigned. Move it to its permanent location before enabling **Start with Windows**; if you move it later, disable and re-enable startup from the new location.
+Run `PrayerBar-Setup-1.0.0-win-x64.exe` to install PrayerBar for the current Windows user. The installer places the app in `%LOCALAPPDATA%\Programs\PrayerBar`, adds a Start menu entry and uninstall entry, and can optionally add a desktop shortcut and launch at sign-in. It does not need administrator approval. The application itself is self-contained and needs no separate .NET runtime. It is currently unsigned.
 
 - Left-click the widget: today's schedule, including sunrise.
 - Drag the widget: reposition; desktop pixel coordinates persist across restarts.
@@ -52,7 +52,7 @@ dotnet test PrayerBar.sln -c Release
 dotnet publish src/PrayerBar.App/PrayerBar.App.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o artifacts/win-x64
 ```
 
-`scripts/publish.ps1` runs tests, publishes, and creates a ZIP with the executable and this README. It uses the local `.tools/dotnet/dotnet.exe` SDK when present, otherwise the installed SDK. Close PrayerBar before overwriting its executable. The local SDK used during development is ignored by source control. Network access is needed for initial SDK/package/runtime restores and actual prayer synchronization; automated tests use fake providers and do not access the network or require a desktop.
+`scripts/build-installer.ps1` runs tests, publishes, and creates `artifacts/installer/PrayerBar-Setup-1.0.0-win-x64.exe`. It uses Inno Setup 6, which can be installed with `winget install --id JRSoftware.InnoSetup --exact`. Close PrayerBar before updating an existing installation. The local SDK used during development is ignored by source control. Network access is needed for initial SDK/package/runtime restores and actual prayer synchronization; automated tests use fake providers and do not access the network or require a desktop.
 
 WPF resources are compiled into the assembly; the tray icon is embedded. Single-file publishing is self-contained, untrimmed, and includes native libraries for self-extraction. PDBs are separate debug artifacts and are not required to run the ZIP. Do not enable trimming for WPF.
 

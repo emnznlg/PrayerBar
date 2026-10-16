@@ -2,6 +2,7 @@ bin/
 obj/
 .tools/
 artifacts/
+installer/Output/
 .vs/
 *.user
 TestResults/

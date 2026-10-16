@@ -47,6 +47,13 @@ public partial class App : System.Windows.Application
         {
             settings = await store.ReadAsync<Settings>("settings.json") ?? new();
             try { settings.Validate(); } catch (Exception ex) { Log.Write("Invalid settings; restoring defaults.", ex); settings = new(); }
+            // An installed executable may have replaced a portable build. Keep the user's
+            // existing startup preference, but point it at the executable now running.
+            if (settings.StartWithWindows)
+            {
+                try { StartupService.Set(true); }
+                catch (Exception ex) { Log.Write("Startup registration could not be refreshed.", ex); }
+            }
             delivered = await store.ReadAsync<HashSet<string>>("notifications.json") ?? [];
             repository = new(new AlAdhanProvider(http), store, Log.Write);
             cache = await repository.LoadAsync(settings, lifetime.Token);
