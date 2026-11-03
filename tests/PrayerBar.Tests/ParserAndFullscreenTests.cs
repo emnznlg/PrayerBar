@@ -13,8 +13,14 @@ public sealed class ParserAndFullscreenTests
     });
     [Fact] public void ParsesDecoratedTimes() { var day = AlAdhanParser.Parse(Response(), Date, "America/Vancouver"); Assert.Equal(6, day.Events[0].At.Hour); Assert.Equal(TimeSpan.FromHours(-8), day.Events[0].At.Offset); }
     [Fact] public void ParsesIsoTimestamps() => Assert.Equal(6, AlAdhanParser.Parse(Response("2026-01-15T06:00:00-08:00"), Date, "America/Vancouver").Events[0].At.Hour);
-    [Theory] [InlineData("bad")] [InlineData("25:10")] [InlineData("2026-01-16T06:00:00-08:00")] [InlineData("2026-01-15T06:00:00+00:00")] [InlineData("20:00")]
+    [Theory] [InlineData("bad")] [InlineData("25:10")] [InlineData("2026-01-16T06:00:00-08:00")] [InlineData("20:00")]
     public void RejectsInvalidTiming(string time) => Assert.Throws<FormatException>(() => AlAdhanParser.Parse(Response(time), Date, "America/Vancouver"));
+    [Fact] public void NormalizesProviderWallClockWhenIsoOffsetDisagreesWithTimezone()
+    {
+        var prayer = AlAdhanParser.Parse(Response("2026-01-15T06:00:00+00:00"), Date, "America/Vancouver").Events[0];
+        Assert.Equal(6, prayer.At.Hour);
+        Assert.Equal(TimeSpan.FromHours(-8), prayer.At.Offset);
+    }
     [Fact] public void RejectsWrongDateAndZone()
     {
         Assert.Throws<FormatException>(() => AlAdhanParser.Parse(Response(date: "16-01-2026"), Date, "America/Vancouver"));

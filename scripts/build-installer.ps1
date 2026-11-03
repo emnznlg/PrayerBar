@@ -2,8 +2,12 @@ param([string]$Configuration = 'Release')
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
-$sdk = Join-Path $root '.tools\dotnet\dotnet.exe'
-if (-not (Test-Path -LiteralPath $sdk)) { $sdk = (Get-Command dotnet -ErrorAction Stop).Source }
+$sdk = @(
+    (Join-Path $root '.tools\dotnet\dotnet.exe'),
+    (Get-Command dotnet -ErrorAction SilentlyContinue).Source,
+    'C:\Program Files\dotnet\dotnet.exe'
+) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
+if (-not $sdk) { throw 'The .NET 10 SDK was not found. Install it with: winget install Microsoft.DotNet.SDK.10' }
 $iscc = @(
     (Get-Command ISCC.exe -ErrorAction SilentlyContinue).Source,
     'C:\Program Files (x86)\Inno Setup 6\ISCC.exe',
@@ -30,5 +34,5 @@ try {
     Copy-Item -LiteralPath docs\VERIFICATION.md -Destination (Join-Path $payload 'VERIFICATION.md') -Force
     & $iscc (Join-Path $root 'installer\PrayerBar.iss')
     if ($LASTEXITCODE -ne 0) { throw 'Installer compilation failed.' }
-    Get-Item (Join-Path $root 'artifacts\installer\PrayerBar-Setup-1.0.0-win-x64.exe')
+    Get-Item (Join-Path $root 'artifacts\installer\PrayerBar-Setup-1.0.1-win-x64.exe')
 } finally { Pop-Location }

@@ -93,8 +93,13 @@ public static class AlAdhanParser
             {
                 if (!System.Text.RegularExpressions.Regex.IsMatch(raw, @"(Z|[+-]\d{2}:\d{2})$")) throw new FormatException("ISO prayer time must include an explicit timezone offset.");
                 if (!DateTimeOffset.TryParse(raw, CultureInfo.InvariantCulture, DateTimeStyles.None, out at)) throw new FormatException("Invalid ISO prayer time.");
-                var converted = TimeZoneInfo.ConvertTime(at, zone);
-                if (DateOnly.FromDateTime(converted.DateTime) != date || converted.Offset != at.Offset) throw new FormatException("Prayer timestamp has an unexpected date or offset.");
+                // AlAdhan occasionally returns an ISO offset that disagrees with its own
+                // metadata timezone around daylight-saving changes. Its date and clock
+                // time are the prayer schedule; interpret that wall-clock time in the
+                // selected/provider timezone instead of discarding an otherwise valid day.
+                var providerClock = at.DateTime;
+                if (DateOnly.FromDateTime(providerClock) != date) throw new FormatException("Prayer timestamp has an unexpected date.");
+                at = PrayerEngine.LocalTime(date, TimeOnly.FromDateTime(providerClock), zone);
             }
             else
             {

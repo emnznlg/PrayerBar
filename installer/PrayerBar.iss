@@ -1,6 +1,6 @@
 ; PrayerBar Windows installer. Compile with Inno Setup 6.
 #define AppName "PrayerBar"
-#define AppVersion "1.0.0"
+#define AppVersion "1.0.1"
 #define AppPublisher "PrayerBar"
 #define AppExeName "PrayerBar.exe"
 #define PublishDir "..\artifacts\installer-payload"
